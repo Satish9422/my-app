@@ -1,0 +1,20 @@
+# green-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-green
+  labels:
+    app: myapp-green
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp-green
+  template:
+    metadata:
+      labels:
+        app: myapp-green
+    spec:
+      containers:
+      - name: myapp
+        image: satish680/my-app:latest

@@ -1,0 +1,8 @@
+# single service pointing to either blue or green
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+  selector:
+    app: myapp-blue  # or myapp-green
