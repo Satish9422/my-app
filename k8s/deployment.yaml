@@ -10,7 +10,7 @@ spec:
       containers:
       - name: myapp
         image: my-image:v1
-
+---
 # green-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -23,7 +23,7 @@ spec:
       containers:
       - name: myapp
         image: my-image:v2
-
+---
 # single service pointing to either blue or green
 apiVersion: v1
 kind: Service
