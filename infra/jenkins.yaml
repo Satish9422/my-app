@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jenkins
+  namespace: jenkins
   labels:
     app: jenkins
 spec:
@@ -14,17 +15,29 @@ spec:
       labels:
         app: jenkins
     spec:
+      securityContext:
+        fsGroup: 1000 
+        runAsUser: 1000
+      serviceAccountName: jenkins
       containers:
         - name: jenkins
-          image: jenkins/jenkins:lts
+          image: satish680/custom-jenkins:latest
           ports:
             - containerPort: 8080
+          volumeMounts:
+            - name: jenkins-storage
+              mountPath: /var/jenkins_home
+      volumes:
+        - name: jenkins-storage
+          persistentVolumeClaim:
+            claimName: ebs-pvc          
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: jenkins
+  namespace: jenkins
 spec:
   type: LoadBalancer
   ports:

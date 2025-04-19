@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    // environment {
-    //     KUBECONFIG = credentials('eks-kubeconfig')  // or configure with aws eks update-kubeconfig
-    // }
-
     stages {
         stage('Checkout') {
             steps {
@@ -28,16 +24,6 @@ pipeline {
                 sh 'kubectl rollout status deployment/myapp-green'
             }
         }
-
-//         stage('Smoke Test') {
-//             steps {
-//                 script {
-//             def podName = sh(script: "kubectl get pods -l app=myapp-green -o jsonpath='{.items[0].metadata.name}'", returnStdout: true).trim()
-//             def podIP = sh(script: "kubectl get pod ${podName} -o jsonpath='{.status.podIP}'", returnStdout: true).trim()
-//             sh "curl http://${podIP}:3000/health"
-// }
-//             }
-//         }
 
         stage('Switch Traffic') {
             steps {

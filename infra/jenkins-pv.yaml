@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ebs-pv
+  namespace: jenkins
+  labels:
+    type: ebs
+spec:
+  capacity:
+    storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ebs-sc
+  awsElasticBlockStore:
+    volumeID: vol-07c26e7965a57b49f
+    fsType: ext4
