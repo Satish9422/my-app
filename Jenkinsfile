@@ -29,28 +29,28 @@ spec:
             }
         }
 
-        // stage('Build & Push') {
-        //     steps {
+        stage('Build & Push') {
+            steps {
 
-        //        sh 'docker build -t my-app:latest .'
-        //        sh 'docker login' 
-        //        sh 'docker tag my-app:latest satish680/my-app:latest'
-        //        sh 'docker push satish680/my-app:latest'
-        //     }
-        // }
-
-        stage('Build and Push with Kaniko') {
-         steps {
-           container('kaniko') {
-            sh '''
-            /kaniko/executor \
-              --dockerfile=Dockerfile \
-              --context=dir:///workspace \
-              --destination=satish680/my-app:latest
-          '''
+               sh 'docker build -t my-app:latest .'
+               sh 'docker login' 
+               sh 'docker tag my-app:latest satish680/my-app:latest'
+               sh 'docker push satish680/my-app:latest'
+            }
         }
-      }
-    }
+
+    //     stage('Build and Push with Kaniko') {
+    //      steps {
+    //        container('kaniko') {
+    //         sh '''
+    //         /kaniko/executor \
+    //           --dockerfile=Dockerfile \
+    //           --context=dir:///workspace \
+    //           --destination=satish680/my-app:latest
+    //       '''
+    //     }
+    //   }
+    // }
 
         stage('Deploy to Green') {
             steps {
