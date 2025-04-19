@@ -44,5 +44,8 @@ spec:
     - name: ui
       port: 8080
       targetPort: 8080
+    - name: agent
+      port: 50000
+      targetPort: 50000      
   selector:
     app: jenkins
