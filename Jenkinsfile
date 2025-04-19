@@ -8,7 +8,7 @@ spec:
   serviceAccountName: jenkins
   containers:
   - name: jnlp
-    image: jenkins/inbound-agent:latest
+    image: bitnami/kubectl:latest
     args:
     - \$(JENKINS_SECRET)
     - \$(JENKINS_NAME)
