@@ -1,7 +1,7 @@
 pipeline {
     agent {
      kubernetes {
-      label 'jenkins-slave'
+      inheritFrom 'jenkins-slave'
     }
   }
 

@@ -24,6 +24,7 @@ spec:
           image: satish680/custom-jenkins:latest
           ports:
             - containerPort: 8080
+            - containerPort: 50000
           volumeMounts:
             - name: jenkins-storage
               mountPath: /var/jenkins_home
