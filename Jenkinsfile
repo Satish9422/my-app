@@ -10,18 +10,20 @@ spec:
     - name: jnlp
       image: jenkins/inbound-agent:latest
       imagePullPolicy: IfNotPresent
-    - name: docker
-      image: docker:20.10.24-dind
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:latest
       command:
         - cat
       tty: true
-    - name: kubectl
-      image: bitnami/kubectl:latest
-      command:
-        - cat
-      tty: true
+      volumeMounts:
+        - name: kaniko-secret
+          mountPath: /kaniko/.docker/
+  volumes:
+    - name: kaniko-secret
+      secret:
+        secretName: kaniko-secret
 """
-      defaultContainer 'kubectl'
+      defaultContainer 'kaniko'
     }
   }
     environment {
@@ -37,16 +39,29 @@ spec:
         //     }
         // }
 
-        stage('Build & Push') {
-            steps {
-              container('docker'){
-               sh 'docker build -t my-app:latest .'
-               sh 'docker login' 
-               sh 'docker tag my-app:latest satish680/my-app:latest'
-               sh 'docker push satish680/my-app:latest'
-              }
-            }
+        // stage('Build & Push') {
+        //     steps {
+        //       container('docker'){
+        //        sh 'docker build -t my-app:latest .'
+        //        sh 'docker login' 
+        //        sh 'docker tag my-app:latest satish680/my-app:latest'
+        //        sh 'docker push satish680/my-app:latest'
+        //       }
+        //     }
+        // }
+
+        stage('Build & Push with Kaniko') {
+         steps {
+          container('kaniko') {
+           sh '''
+            /kaniko/executor \
+              --dockerfile=Dockerfile \
+              --context=dir://workspace \
+              --destination=${IMAGE_NAME}
+           '''
         }
+      }
+    }
 
 
         stage('Deploy to Green') {
