@@ -21,7 +21,7 @@ spec:
   volumes:
     - name: kaniko-secret
       secret:
-        secretName: kaniko-secret
+        secretName: regcred
 """
       defaultContainer 'kaniko'
     }
