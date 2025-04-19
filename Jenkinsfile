@@ -31,11 +31,11 @@ spec:
   }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/Satish9422/my-app.git' 
-            }
-        }
+        // stage('Checkout') {
+        //     steps {
+        //         git branch: 'main', url: 'https://github.com/Satish9422/my-app.git' 
+        //     }
+        // }
 
         stage('Build & Push') {
             steps {
