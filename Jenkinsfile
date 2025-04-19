@@ -7,18 +7,26 @@ kind: Pod
 spec:
   serviceAccountName: jenkins
   containers:
-  - name: jnlp
-    image: jenkins/inbound-agent:latest
-    args:
-    - \$(JENKINS_SECRET)
-    - \$(JENKINS_NAME)
+    - name: jnlp
+      image: jenkins/inbound-agent:latest
+      imagePullPolicy: IfNotPresent
+    - name: docker
+      image: docker:20.10.24-dind
+      command:
+        - cat
+      tty: true
+    - name: kubectl
+      image: bitnami/kubectl:latest
+      command:
+        - cat
+      tty: true
 """
+      defaultContainer 'kubectl'
     }
   }
-
     environment {
       IMAGE_NAME = 'satish680/my-app:latest'
-      KUBECONFIG = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+      // KUBECONFIG = "/var/run/secrets/kubernetes.io/serviceaccount/token"
 
   }
 
