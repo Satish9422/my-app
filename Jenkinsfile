@@ -1,9 +1,26 @@
 pipeline {
-    agent any
-
-    tools {
-        dockerTool 'docker'
+    agent {
+     kubernetes {
+      yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:latest
+      command:
+        - cat
+      tty: true
+"""
     }
+  }
+
+    // tools {
+    //     dockerTool 'docker'
+    // }
+    environment {
+      IMAGE_NAME = 'satish680/my-app:latest'
+  }
 
     stages {
         stage('Checkout') {
@@ -12,15 +29,28 @@ pipeline {
             }
         }
 
-        stage('Build & Push') {
-            steps {
+        // stage('Build & Push') {
+        //     steps {
 
-               sh 'docker build -t my-app:latest .'
-               sh 'docker login' 
-               sh 'docker tag my-app:latest satish680/my-app:latest'
-               sh 'docker push satish680/my-app:latest'
-            }
+        //        sh 'docker build -t my-app:latest .'
+        //        sh 'docker login' 
+        //        sh 'docker tag my-app:latest satish680/my-app:latest'
+        //        sh 'docker push satish680/my-app:latest'
+        //     }
+        // }
+
+        stage('Build and Push with Kaniko') {
+         steps {
+           container('kaniko') {
+            sh '''
+            /kaniko/executor \
+              --dockerfile=Dockerfile \
+              --context=dir:///workspace \
+              --destination=satish680/my-app:latest
+          '''
         }
+      }
+    }
 
         stage('Deploy to Green') {
             steps {
