@@ -4,5 +4,9 @@ kind: Service
 metadata:
   name: myapp-service
 spec:
+  type: LoadBalancer
   selector:
     app: myapp-blue  # or myapp-green
+  ports:
+  - port: 3000
+    targetPort: 3000
