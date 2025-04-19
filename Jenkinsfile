@@ -1,10 +1,20 @@
 pipeline {
-    agent {
-     kubernetes {
-      inheritFrom 'jenkins-slave'
+  agent {
+    kubernetes {
+      yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  serviceAccountName: jenkins
+  containers:
+  - name: jnlp
+    image: jenkins/inbound-agent:latest
+    args:
+    - \$(JENKINS_SECRET)
+    - \$(JENKINS_NAME)
+"""
     }
   }
-
 
     environment {
       IMAGE_NAME = 'satish680/my-app:latest'
