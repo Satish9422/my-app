@@ -5,11 +5,11 @@ pipeline {
     }
   }
 
-    // tools {
-    //     dockerTool 'docker'
-    // }
+
     environment {
       IMAGE_NAME = 'satish680/my-app:latest'
+      KUBECONFIG = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+
   }
 
     stages {
