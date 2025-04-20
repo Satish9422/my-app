@@ -5,31 +5,32 @@ pipeline {
 apiVersion: v1
 kind: Pod
 spec:
-  serviceAccountName: jenkins
   containers:
-    - name: jnlp
-      image: jenkins/inbound-agent:latest
-      imagePullPolicy: IfNotPresent
-    - name: kaniko
-      image: gcr.io/kaniko-project/executor:latest
-      command:
-        - cat
-      tty: true
-      volumeMounts:
-        - name: kaniko-secret
-          mountPath: /kaniko/.docker/
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    command:
+    - sleep
+    args:
+    - 9999999
+    volumeMounts:
+      - name: kaniko-secret
+        mountPath: /kaniko/.docker
   volumes:
     - name: kaniko-secret
-      secret:
-        secretName: regcred
+      projected:
+        sources:
+          - secret:
+              name: regcred
+              items:
+                - key: .dockerconfigjson
+                  path: config.json
 """
-      defaultContainer 'kaniko'
     }
   }
-    environment {
-      IMAGE_NAME = 'satish680/my-app:latest'
-      // KUBECONFIG = "/var/run/secrets/kubernetes.io/serviceaccount/token"
 
+  environment {
+    IMAGE_NAME = 'satish680/my-app'
+    IMAGE_TAG = 'latest'
   }
 
     stages {
@@ -51,16 +52,16 @@ spec:
         // }
 
         stage('Build & Push with Kaniko') {
-         steps {
-          container('kaniko') {
-           sh '''
-            /kaniko/executor \
-              --dockerfile=Dockerfile \
-              --context=dir://workspace \
-              --destination=${IMAGE_NAME}
-           '''
-        }
-      }
+          steps {
+            container('kaniko') {
+              sh '''
+                /kaniko/executor \
+                  --dockerfile=Dockerfile \
+                  --context=`pwd` \
+                  --destination=${IMAGE_NAME}:${IMAGE_TAG}
+              '''
+            }
+          }
     }
 
 
