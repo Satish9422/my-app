@@ -74,8 +74,8 @@ spec:
 
         stage('Deploy to Green') {
             steps {
-              withCredentials([file(credentialsId: 'kubeconfig-jenkins', variable: 'KUBECONFIG')]){
-               
+              container('kubectl'){
+
                 sh 'kubectl apply -f k8s/green-deployment.yaml'
                 sh 'kubectl rollout status deployment/myapp-green'
               }
