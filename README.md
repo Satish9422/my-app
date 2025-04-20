@@ -38,15 +38,15 @@ kubectl apply -f infra/jenkins-pvc.yaml
 ```
 
 ### Create Service Account for jenkins to allow access to cluster resources
-```bashkubectl apply -f infra/jenkins-sa.yaml
+```bash kubectl apply -f infra/jenkins-sa.yaml
 ```
 
 ### Create role binding for jenkins Service Account
-```bashkubectl apply -f infra/rbac.yaml
+```bash kubectl apply -f infra/rbac.yaml
 ```
 
 ### Create Jenkins pod on kubernetes 
-```bashkubectl apply -f infra/jenkins.yaml
+```bash kubectl apply -f infra/jenkins.yaml
 ```
 
 
