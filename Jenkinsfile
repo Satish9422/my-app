@@ -20,6 +20,7 @@ spec:
     command:
     - cat
     tty: true      
+  serviceAccountName: jenkins-agent  
   volumes:
     - name: kaniko-secret
       projected:
