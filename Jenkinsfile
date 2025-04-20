@@ -37,6 +37,7 @@ spec:
   environment {
     IMAGE_NAME = 'satish680/my-app'
     IMAGE_TAG = 'latest'
+    KUBECONFIG = "${WORKSPACE}/kubeconfig"
   }
 
     stages {
@@ -73,11 +74,10 @@ spec:
 
         stage('Deploy to Green') {
             steps {
-              container('kubectl'){
-                sh 'ls -l /bin/sh'
-
-                // sh 'kubectl apply -f k8s/green-deployment.yaml'
-                // sh 'kubectl rollout status deployment/myapp-green'
+              withCredentials([file(credentialsId: 'kubeconfig-jenkins', variable: 'KUBECONFIG')]){
+               
+                sh 'kubectl apply -f k8s/green-deployment.yaml'
+                sh 'kubectl rollout status deployment/myapp-green'
               }
             }
         }
