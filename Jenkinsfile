@@ -85,8 +85,7 @@ spec:
         stage('Switch Traffic') {
             steps {
             container('kubectl') {  
-               sh 'kubectl get svc'
-                // sh 'kubectl patch service myapp-service -p \'{"spec":{"selector":{"app":"myapp-green"}}}\''
+              sh 'kubectl patch service myapp-service -p \'{"spec":{"selector":{"app":"myapp-green"}}}\''
             }
           }
         }
