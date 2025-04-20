@@ -1,4 +1,4 @@
-# Setup EKS Cluster on AWS
+## Setup EKS Cluster on AWS
 ```bash
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
