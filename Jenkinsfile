@@ -90,12 +90,12 @@ spec:
           }
         }
 
-        // stage('Cleanup Blue') {
-        //     steps {
-        //     container('kubectl') {  
-        //         sh 'kubectl delete deployment myapp-blue'
-        //     }
-        //   }  
-        // }
+        stage('Cleanup Blue') {
+            steps {
+            container('kubectl') {  
+                sh 'kubectl delete deployment myapp-blue'
+            }
+          }  
+        }
     }
 }
