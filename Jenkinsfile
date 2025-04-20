@@ -74,26 +74,28 @@ spec:
         stage('Deploy to Green') {
             steps {
               container('kubectl'){
-                sh 'kubectl apply -f k8s/green-deployment.yaml'
-                sh 'kubectl rollout status deployment/myapp-green'
+                sh 'ls -l /bin/sh'
+
+                // sh 'kubectl apply -f k8s/green-deployment.yaml'
+                // sh 'kubectl rollout status deployment/myapp-green'
               }
             }
         }
 
-        stage('Switch Traffic') {
-            steps {
-            container('kubectl') {  
-                sh 'kubectl patch service myapp-service -p \'{"spec":{"selector":{"app":"myapp-green"}}}\''
-            }
-          }
-        }
+        // stage('Switch Traffic') {
+        //     steps {
+        //     container('kubectl') {  
+        //         sh 'kubectl patch service myapp-service -p \'{"spec":{"selector":{"app":"myapp-green"}}}\''
+        //     }
+        //   }
+        // }
 
-        stage('Cleanup Blue') {
-            steps {
-            container('kubectl') {  
-                sh 'kubectl delete deployment myapp-blue'
-            }
-          }  
-        }
+        // stage('Cleanup Blue') {
+        //     steps {
+        //     container('kubectl') {  
+        //         sh 'kubectl delete deployment myapp-blue'
+        //     }
+        //   }  
+        // }
     }
 }
