@@ -72,7 +72,7 @@ spec:
 
         stage('Deploy to Green') {
             steps {
-              container('kaniko'){
+              container('kubectl'){
                 sh 'kubectl apply -f k8s/green-deployment.yaml'
                 sh 'kubectl rollout status deployment/myapp-green'
               }
