@@ -16,7 +16,7 @@ spec:
       - name: kaniko-secret
         mountPath: /kaniko/.docker
   - name: kubectl
-    image: lachlanevenson/k8s-kubectl:v1.27.1
+    image: satish680/custom-kubectl
     command:
     - cat
     tty: true      
