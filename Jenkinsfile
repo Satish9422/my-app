@@ -15,6 +15,11 @@ spec:
     volumeMounts:
       - name: kaniko-secret
         mountPath: /kaniko/.docker
+  - name: kubectl
+    image: bitnami/kubectl:latest
+    command:
+    - cat
+    tty: true      
   volumes:
     - name: kaniko-secret
       projected:
@@ -76,14 +81,18 @@ spec:
 
         stage('Switch Traffic') {
             steps {
+            container('kubectl') {  
                 sh 'kubectl patch service myapp-service -p \'{"spec":{"selector":{"app":"myapp-green"}}}\''
             }
+          }
         }
 
         stage('Cleanup Blue') {
             steps {
+            container('kubectl') {  
                 sh 'kubectl delete deployment myapp-blue'
             }
+          }  
         }
     }
 }
