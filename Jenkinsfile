@@ -85,17 +85,18 @@ spec:
         stage('Switch Traffic') {
             steps {
             container('kubectl') {  
-                sh 'kubectl patch service myapp-service -p \'{"spec":{"selector":{"app":"myapp-green"}}}\''
+               sh 'kubect get svc'
+                // sh 'kubectl patch service myapp-service -p \'{"spec":{"selector":{"app":"myapp-green"}}}\''
             }
           }
         }
 
-        stage('Cleanup Blue') {
-            steps {
-            container('kubectl') {  
-                sh 'kubectl delete deployment myapp-blue'
-            }
-          }  
-        }
+        // stage('Cleanup Blue') {
+        //     steps {
+        //     container('kubectl') {  
+        //         sh 'kubectl delete deployment myapp-blue'
+        //     }
+        //   }  
+        // }
     }
 }
