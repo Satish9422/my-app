@@ -37,7 +37,7 @@ spec:
   environment {
     IMAGE_NAME = 'satish680/my-app'
     IMAGE_TAG = 'latest'
-    KUBECONFIG = "${WORKSPACE}/kubeconfig"
+    // KUBECONFIG = "${WORKSPACE}/kubeconfig"
   }
 
     stages {
