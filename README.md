@@ -58,7 +58,7 @@ Install and configure Kubernetes plugin
 
 Create jenkins agent pod template in kubernetes cloud.
 
-Use jnlp, kaniko and kubectl docker containers to use as jenkins agents on eks cluster.
+Use jnlp, kaniko and kubectl to spun up docker container on jenkins agent pod.
 
 ### Create Jenkinsfile 
 create jenkinsfile utilising kaniko and kubectl docker images for agent pod to run on eks cluster.
@@ -72,6 +72,21 @@ kubectl apply -f k8s/service.yaml
 ### Blue-Green Deployment 
 ```bash
 kubectl apply -f k8s/green-deployment.yaml
+
+### Check green deployment status
+```bash
+kubectl rollout status deployment/myapp-green
+```
+       
+### Switch Traffic to green deployment 
+If green deployment status is successful switch traffic to it.
+```bash 
+    kubectl patch service myapp-service -p \'{"spec":{"selector":{"app":"myapp-green"}}}\'
+```
+### Cleanup Blue Deployment 
+```bash
+kubectl delete deployment myapp-blue
+```
 
 
 
