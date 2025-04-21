@@ -41,22 +41,11 @@ spec:
   }
 
     stages {
-        // stage('Checkout') {
-        //     steps {
-        //         git branch: 'main', url: 'https://github.com/Satish9422/my-app.git' 
-        //     }
-        // }
-
-        // stage('Build & Push') {
-        //     steps {
-        //       container('docker'){
-        //        sh 'docker build -t my-app:latest .'
-        //        sh 'docker login' 
-        //        sh 'docker tag my-app:latest satish680/my-app:latest'
-        //        sh 'docker push satish680/my-app:latest'
-        //       }
-        //     }
-        // }
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Satish9422/my-app.git' 
+            }
+        }
 
         stage('Build & Push with Kaniko') {
           steps {
