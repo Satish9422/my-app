@@ -68,6 +68,14 @@ create jenkinsfile utilising kaniko and kubectl docker images for agent pod to r
 kubectl aaply -f k8s/blue-deployment.yaml
 kubectl apply -f k8s/service.yaml
 ```
+### Push new image to docker registry.
+Create sercret in eks cluster with docker credentials
+```bash 
+kubectl create secret docker-registry regcred \
+--docker-server=https://index.docker.io/v1/ \
+--docker-username=dokcer_username \
+--docker-password=<docker access token> \
+--docker-email=docker_email
 
 ### Blue-Green Deployment 
 ```bash
