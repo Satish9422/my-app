@@ -66,12 +66,35 @@ spec:
               container('kubectl'){
 
                 sh 'kubectl apply -f k8s/green-deployment.yaml'
-                sh 'kubectl rollout status deployment/myapp-green'
+              
               }
             }
         }
 
+        stage('Rollout Check'){
+          steps{
+            container('kubectl'){
+              script {
+                def status = sh(
+                  script: "kubectl rollout status deployment/myapp-green --timeout=60",
+                  returnStatus: true
+                )
+                if (status != 0){
+                  error("Deployment rollout failed. Stopping pipeline.")
+                } else {
+                  echo "Deployment rollout Successful"
+                }
+              }
+            }
+          }
+        }
+
         stage('Switch Traffic') {
+          when {
+            expression {
+              current.Build.currentresult == 'SUCCESS'
+            }
+          }
             steps {
             container('kubectl') {  
               sh 'kubectl patch service myapp-service -p \'{"spec":{"selector":{"app":"myapp-green"}}}\''
@@ -79,12 +102,12 @@ spec:
           }
         }
 
-        stage('Cleanup Blue') {
-            steps {
-            container('kubectl') {  
-                sh 'kubectl delete deployment myapp-blue'
-            }
-          }  
-        }
+        // stage('Cleanup Blue') {
+        //     steps {
+        //     container('kubectl') {  
+        //         sh 'kubectl delete deployment myapp-blue'
+        //     }
+        //   }  
+        // }
     }
 }
