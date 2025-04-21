@@ -76,7 +76,7 @@ spec:
             container('kubectl'){
               script {
                 def status = sh(
-                  script: "kubectl rollout status deployment/myapp-green --timeout=60",
+                  script: "kubectl rollout status deployment/myapp-green --timeout=60s",
                   returnStatus: true
                 )
                 if (status != 0){
