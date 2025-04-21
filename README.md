@@ -52,6 +52,26 @@ kubectl apply -f infra/rbac.yaml
 ```bash
 kubectl apply -f infra/jenkins.yaml
 ```
+### Configure and Install Jenkins
+
+Install and configure Kubernetes plugin
+
+Create jenkins agent pod template in kubernetes cloud.
+
+Use jnlp, kaniko and kubectl docker containers to use as jenkins agents on eks cluster.
+
+### Create Jenkinsfile 
+create jenkinsfile utilising kaniko and kubectl docker images for agent pod to run on eks cluster.
+
+### Deploy application 
+```bash
+kubectl aaply -f k8s/blue-deployment.yaml
+kubectl apply -f k8s/service.yaml
+```
+
+### Blue-Green Deployment 
+```bash
+kubectl apply -f k8s/green-deployment.yaml
 
 
 
