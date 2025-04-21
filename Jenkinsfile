@@ -92,7 +92,7 @@ spec:
         stage('Switch Traffic') {
           when {
             expression {
-              current.Build.currentResult == 'SUCCESS'
+              currentBuild.currentResult == 'SUCCESS'
             }
           }
             steps {
