@@ -4,4 +4,4 @@
 # pip3 install -r requirements.txt
 
 flask==2.2.2
-
+Werkzeug==2.2.2
