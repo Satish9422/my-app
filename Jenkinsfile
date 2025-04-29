@@ -21,17 +21,13 @@ spec:
   volumes:
   - name: aws-secret
     secret:
-      secretName: aws-ecr-credentials      
+      secretName: kaniko-ecr-credentials      
   - name: kubectl
     image: satish680/custom-kubectl
     command:
     - cat
     tty: true      
-  serviceAccountName: jenkins 
-  volumes:
-    - name: aws-secret
-      secret:
-        secretName: kaniko-ecr-credentials
+  serviceAccountName: jenkins
 """
     }
   }
