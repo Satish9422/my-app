@@ -20,8 +20,13 @@ spec:
         mountPath: /kaniko/.docker
   volumes:
   - name: aws-secret
-    secret:
-      secretName: kaniko-ecr-credentials      
+    projected:
+         sources:
+           - secret:
+               name: kaniko-ecr-credentials
+               items:
+                 - key: .dockerconfigjson
+                   path: config.json      
   - name: kubectl
     image: satish680/custom-kubectl
     command:
@@ -49,10 +54,10 @@ spec:
         stage('Build & Push with Kaniko') {
           steps {
             container('kaniko') {
-              sh 'ls /kaniko/.docker '
-              // sh """
-              //   /kaniko/executor --dockerfile=Dockerfile --context=`pwd` --destination=084375558715.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
-              // """
+              //sh 'ls /kaniko/.docker '
+              sh """
+                /kaniko/executor --dockerfile=Dockerfile --context=`pwd` --destination=084375558715.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+              """
             }
           }
     }
