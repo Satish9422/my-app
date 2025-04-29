@@ -59,7 +59,7 @@ spec:
                   
                   --dockerfile=Dockerfile \
                   --context=`pwd` \
-                  --destination='${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}'
+                  --destination=084375558715.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
 
               '''
             }
