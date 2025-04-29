@@ -53,12 +53,12 @@ spec:
         stage('Build & Push with Kaniko') {
           steps {
             container('kaniko') {
-              sh '''
+              sh """
                 /kaniko/executor  
                   --dockerfile=Dockerfile \
                   --context=`pwd` \
                   --destination=${IMAGE_NAME}:${IMAGE_TAG}
-              '''
+              """
             }
           }
     }
