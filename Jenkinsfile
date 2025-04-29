@@ -17,7 +17,7 @@ spec:
       value: us-east-1
     volumeMounts:
       - name: aws-secret
-        mountPath: /kaniko/.aws
+        mountPath: /kaniko/.docker
   volumes:
   - name: aws-secret
     secret:
@@ -49,14 +49,9 @@ spec:
         stage('Build & Push with Kaniko') {
           steps {
             container('kaniko') {
-              script{
               sh """
-                /kaniko/executor \
-                  --dockerfile=Dockerfile \
-                  --context=`pwd` \
-                  --destination=084375558715.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+                /kaniko/executor --dockerfile=Dockerfile --context=`pwd` --destination=084375558715.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
               """
-            }
             }
           }
     }
