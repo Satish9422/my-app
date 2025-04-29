@@ -49,54 +49,55 @@ spec:
         stage('Build & Push with Kaniko') {
           steps {
             container('kaniko') {
-              sh """
-                /kaniko/executor --dockerfile=Dockerfile --context=`pwd` --destination=084375558715.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
-              """
+              sh 'ls /kaniko/.docker '
+              // sh """
+              //   /kaniko/executor --dockerfile=Dockerfile --context=`pwd` --destination=084375558715.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+              // """
             }
           }
     }
 
 
-        stage('Deploy to Green') {
-            steps {
-              container('kubectl'){
+        // stage('Deploy to Green') {
+        //     steps {
+        //       container('kubectl'){
 
-                sh 'kubectl apply -f k8s/green-deployment.yaml'
+        //         sh 'kubectl apply -f k8s/green-deployment.yaml'
               
-              }
-            }
-        }
+        //       }
+        //     }
+        // }
 
-        stage('Rollout Check'){
-          steps{
-            container('kubectl'){
-              script {
-                def status = sh(
-                  script: "kubectl rollout status deployment/myapp-green --timeout=60s",
-                  returnStatus: true
-                )
-                if (status != 0){
-                  error("Deployment rollout failed. Stopping pipeline.")
-                } else {
-                  echo "Deployment rollout Successful"
-                }
-              }
-            }
-          }
-        }
+        // stage('Rollout Check'){
+        //   steps{
+        //     container('kubectl'){
+        //       script {
+        //         def status = sh(
+        //           script: "kubectl rollout status deployment/myapp-green --timeout=60s",
+        //           returnStatus: true
+        //         )
+        //         if (status != 0){
+        //           error("Deployment rollout failed. Stopping pipeline.")
+        //         } else {
+        //           echo "Deployment rollout Successful"
+        //         }
+        //       }
+        //     }
+        //   }
+        // }
 
-        stage('Switch Traffic') {
-          when {
-            expression {
-              currentBuild.currentResult == 'SUCCESS'
-            }
-          }
-            steps {
-            container('kubectl') {  
-              sh 'kubectl patch service myapp-service -p \'{"spec":{"selector":{"app":"myapp-green"}}}\''
-            }
-          }
-        }
+        // stage('Switch Traffic') {
+        //   when {
+        //     expression {
+        //       currentBuild.currentResult == 'SUCCESS'
+        //     }
+        //   }
+        //     steps {
+        //     container('kubectl') {  
+        //       sh 'kubectl patch service myapp-service -p \'{"spec":{"selector":{"app":"myapp-green"}}}\''
+        //     }
+        //   }
+        // }
 
         // stage('Cleanup Blue') {
         //     steps {
