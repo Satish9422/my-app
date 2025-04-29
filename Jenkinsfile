@@ -55,7 +55,7 @@ spec:
             container('kaniko') {
               sh '''
                 
-                /kaniko/executor \   
+                /kaniko/executor   
                   --dockerfile=Dockerfile \
                   --context=`pwd` \
                   --destination=${IMAGE_NAME}:${IMAGE_TAG}
