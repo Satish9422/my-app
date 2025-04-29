@@ -27,7 +27,7 @@ spec:
     command:
     - cat
     tty: true      
-  serviceAccountName: jenkins  
+  serviceAccountName: jenkins-agent  
   volumes:
     - name: aws-secret
       secret:
