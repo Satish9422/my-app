@@ -37,7 +37,7 @@ spec:
   }
 
   environment {
-    IMAGE_REPO_NAME = 'my-app'
+    IMAGE_NAME = '084375558715.dkr.ecr.us-east-1.amazonaws.com/my-app'
     IMAGE_TAG = 'latest'
     AWS_ACCOUNT_ID = '084375558715'
     AWS_REGION = 'us-east-1'
@@ -55,11 +55,10 @@ spec:
             container('kaniko') {
               sh '''
                 
-                /kaniko/executor \
-                  
+                /kaniko/executor \   
                   --dockerfile=Dockerfile \
                   --context=`pwd` \
-                  --destination=084375558715.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+                  --destination=${IMAGE_NAME}:${IMAGE_TAG}
 
               '''
             }
