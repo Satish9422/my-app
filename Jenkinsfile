@@ -31,7 +31,7 @@ spec:
   volumes:
     - name: aws-secret
       secret:
-        secretName: aws-ecr-credentials
+        secretName: kaniko-ecr-credentials
 """
     }
   }
@@ -54,12 +54,9 @@ spec:
           steps {
             container('kaniko') {
               sh '''
-                 export AWS_ACCESS_KEY=$(cat /kaniko/.aws/credentials | grep aws_access_key_id | awk '{print $3}')
-                 export AWS_SECRET_ACCESS_KEY=$(cat /kaniko/.aws/credentials | grep aws_secret_access_key | awk '{print $3}')
-
-                 aws ecr get-login-password --region $AWS_REGION | \
-                  docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                
                 /kaniko/executor \
+                  --
                   --dockerfile=Dockerfile \
                   --context=`pwd` \
                   --destination=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG} \
