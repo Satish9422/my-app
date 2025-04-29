@@ -54,7 +54,6 @@ spec:
         stage('Build & Push with Kaniko') {
           steps {
             container('kaniko') {
-              //sh 'ls /kaniko/.docker '
               sh """
                 /kaniko/executor --dockerfile=Dockerfile --context=`pwd` --destination=084375558715.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
               """
@@ -63,15 +62,15 @@ spec:
     }
 
 
-        // stage('Deploy to Green') {
-        //     steps {
-        //       container('kubectl'){
+        stage('Deploy to Green') {
+            steps {
+              container('kubectl'){
 
-        //         sh 'kubectl apply -f k8s/green-deployment.yaml'
+                sh 'kubectl apply -f k8s/green-deployment.yaml'
               
-        //       }
-        //     }
-        // }
+              }
+            }
+        }
 
         // stage('Rollout Check'){
         //   steps{
