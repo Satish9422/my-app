@@ -17,7 +17,12 @@ spec:
       value: us-east-1
     volumeMounts:
       - name: aws-secret
-        mountPath: /kaniko/.docker
+        mountPath: /kaniko/.docker      
+  - name: kubectl
+    image: satish680/custom-kubectl
+    command:
+    - cat
+    tty: true      
   volumes:
   - name: aws-secret
     projected:
@@ -26,12 +31,7 @@ spec:
                name: kaniko-ecr-credentials
                items:
                  - key: .dockerconfigjson
-                   path: config.json      
-  - name: kubectl
-    image: satish680/custom-kubectl
-    command:
-    - cat
-    tty: true      
+                   path: config.json    
   serviceAccountName: jenkins
 """
     }
