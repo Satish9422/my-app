@@ -66,7 +66,7 @@ spec:
             steps {
               container('kubectl'){
 
-                sh 'kubectl rollout deployment/myapp-green'
+                sh 'kubectl apply -f k8s/blue-deployment.yaml'
               
               }
             }
