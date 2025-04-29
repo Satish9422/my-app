@@ -49,12 +49,14 @@ spec:
         stage('Build & Push with Kaniko') {
           steps {
             container('kaniko') {
+              script{
               sh """
-                /kaniko/executor  
+                /kaniko/executor \
                   --dockerfile=Dockerfile \
                   --context=`pwd` \
-                  --destination=${IMAGE_NAME}:${IMAGE_TAG}
+                  --destination=084375558715.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
               """
+            }
             }
           }
     }
