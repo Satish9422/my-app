@@ -19,3 +19,40 @@ spec:
       containers:
       - name: myapp
         image: satish680/my-app:latest
+
+---
+# green-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-green
+  namespace: jenkins
+  labels:
+    app: myapp-green
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-green
+  template:
+    metadata:
+      labels:
+        app: myapp-green
+    spec:
+      containers:
+      - name: myapp
+        image: satish680/my-app:latest
+---
+# single service pointing to either blue or green
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+  namespace: jenkins
+spec:
+  type: LoadBalancer
+  selector:
+    app: myapp-blue  # or myapp-green
+  ports:
+  - port: 3000
+    targetPort: 3000
