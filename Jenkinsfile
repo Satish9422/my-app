@@ -12,9 +12,16 @@ spec:
     - sleep
     args:
     - 9999999
+    env:
+    - name: AWS_REGION
+      value: us-east-1
     volumeMounts:
-      - name: kaniko-secret
-        mountPath: /kaniko/.docker
+      - name: aws-secret
+        mountPath: /kaniko/.aws
+  volumes:
+  - name: aws-secret
+    secret:
+      secretName: aws-ecr-credentials      
   - name: kubectl
     image: satish680/custom-kubectl
     command:
@@ -22,22 +29,18 @@ spec:
     tty: true      
   serviceAccountName: jenkins-agent  
   volumes:
-    - name: kaniko-secret
-      projected:
-        sources:
-          - secret:
-              name: regcred
-              items:
-                - key: .dockerconfigjson
-                  path: config.json
+    - name: aws-secret
+      secret:
+        secretName: aws-ecr-credentials
 """
     }
   }
 
   environment {
-    IMAGE_NAME = 'satish680/my-app'
+    IMAGE_REPO_NAME = 'my-app'
     IMAGE_TAG = 'latest'
-    // KUBECONFIG = "${WORKSPACE}/kubeconfig"
+    AWS_ACCOUNT_ID = '084375558715'
+    AWS_REGION = 'us-east-1'
   }
 
     stages {
@@ -51,10 +54,17 @@ spec:
           steps {
             container('kaniko') {
               sh '''
+                 export AWS_ACCESS_KEY-$(cat /kaniko/.aws/credentials | grep aws_access_key_id | awk '{print $3}')
+                 export AWS_SECRET_ACCESS_KEY-$(cat /kaniko/.aws/credentials | grep aws_secret_access_key | awk '{print $3}')
+
+                 aws ecr get-login-password --region $AWS_REGION | \
+                  docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
                 /kaniko/executor \
                   --dockerfile=Dockerfile \
                   --context=`pwd` \
-                  --destination=${IMAGE_NAME}:${IMAGE_TAG}
+                  --destination=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG} \
+                  --insecure \
+                  --skip-tls-verify
               '''
             }
           }

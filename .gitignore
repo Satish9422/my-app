@@ -1,2 +1,4 @@
 /app/node_modules
 /aws-ebs-csi-driver
+/Jenkinsfile.docker
+/commands.txt

@@ -5,13 +5,13 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: my-eks-clusters
+  name: my-eks-cluster
   region: us-east-1
-  version: "1.29"
+  version: "1.30"
 
 nodeGroups:
   - name: worker-node
-    instanceType: t3.large
+    instanceType: t3.small
     desiredCapacity: 1
 ```
 ### Create IAM policy
@@ -19,18 +19,18 @@ nodeGroups:
 aws iam create-policy \
     --policy-name AWSLoadBalancerControllerIAMPolicy \
     --policy-document file://iam_policy.json
-eksctl utils associate-iam-oidc-provider --cluster my-eks-clusters --approve
+eksctl utils associate-iam-oidc-provider --cluster my-eks-cluster --approve
 ```
 
 ### Create Service Account on cluster for EBS Driver
 ```bash
 eksctl create iamserviceaccount \
-  --name ebs-csi-controller-sa \
-  --namespace kube-system \
-  --cluster my-eks-clusters \
-  --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
-  --approve \
-  --role-name jenkins-eks-role
+--name ebs-csi-controller-sa \
+--namespace kube-system \
+--cluster my-eks-cluster \
+--attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
+--approve \
+--role-name jenkins-ebs-role
 ```
 ### Create EBS volume on AWS and attach to persistent volume in cluster.
 ```bash
