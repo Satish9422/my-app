@@ -16,6 +16,8 @@ spec:
       labels:
         app: myapp-blue
     spec:
+      nodeSelector:
+        disktype: ssd
       containers:
       - name: myapp
         image: satish680/my-app:latest
@@ -39,6 +41,8 @@ spec:
       labels:
         app: myapp-green
     spec:
+      nodeSelector:
+        disktype: ssd
       containers:
       - name: myapp
         image: satish680/my-app:latest

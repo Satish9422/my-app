@@ -7,7 +7,7 @@ kind: Pod
 spec:
   containers:
   - name: kaniko
-    image: satish680/custom-kaniko:latest
+    image: 084375558715.dkr.ecr.us-east-1.amazonaws.com/custom-kaniko
     command:
     - sleep
     args:
@@ -19,7 +19,7 @@ spec:
       - name: aws-secret
         mountPath: /kaniko/.docker      
   - name: kubectl
-    image: satish680/custom-kubectl
+    image: 084375558715.dkr.ecr.us-east-1.amazonaws.com/custom-kubectl
     command:
     - cat
     tty: true      
