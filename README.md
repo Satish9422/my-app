@@ -7,12 +7,12 @@ kind: ClusterConfig
 metadata:
   name: my-eks-cluster
   region: us-east-1
-  version: "1.30"
+  version: "1.32"
 
 nodeGroups:
   - name: worker-node
-    instanceType: t3.small
-    desiredCapacity: 1
+    instanceType: t2.micro
+    desiredCapacity: 2
 ```
 ### Create IAM policy
 ```bash
