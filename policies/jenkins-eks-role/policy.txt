@@ -1,0 +1,18 @@
+Attache below aws managed policy to jenkins-eks-role
+
+    1. AmazonEKSClusterPolicy
+    2. AmazonEKSWorkerNodePolicy
+
+    Attach below customer managed policy
+    3. EKS-ebs-volume
+    4. EKS-IRSA-policy
+    5. KanikoECRPolicy
+
+Attach below policies to Ec2 instance node IAM role:
+
+    1. AmazonEBSCSIDriverPolicy
+    2. AmazonEC2ContainerRegistryReadOnly
+    3. AmazonEKS_CNI_Policy
+    4. AmazonEKSWorkerNodePolicy
+    5. AmazonSSMManagedInstanceCore
+    6. KanikoECRPolicy       .....customer managed
